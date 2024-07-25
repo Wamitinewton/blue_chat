@@ -1,6 +1,7 @@
 package com.example.blue_chat.data.chat
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+@SuppressLint("MissingPermission")
 class AndroidBluetoothController(
     private val context: Context
 ): BluetoothController {
@@ -51,14 +53,33 @@ class AndroidBluetoothController(
             foundDeviceReciever,
             IntentFilter(BluetoothDevice.ACTION_FOUND)
         )
+        // call updatePairedDevices()..............
+        updatePairedDevices()
+
+        bluetoothAdapter?.startDiscovery()
     }
 
     override fun stopDiscovery() {
-        TODO("Not yet implemented")
+        if (!hasPermission(Manifest.permission.BLUETOOTH_SCAN)){
+            return
+        }
+        bluetoothAdapter?.cancelDiscovery()
     }
 
     override fun release() {
-        TODO("Not yet implemented")
+        context.unregisterReceiver(foundDeviceReciever)
+    }
+
+    private fun updatePairedDevices(){
+        if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
+            return
+        }
+        bluetoothAdapter
+            ?.bondedDevices
+            ?.map { it.toBluetoothDeviceDomain() }
+            ?.also { devices ->
+                _pairedDevices.update { devices }
+            }
     }
 
 
