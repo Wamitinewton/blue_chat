@@ -70,8 +70,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("com.google.dagger:hilt-android:2.51")
-    kapt("com.google.dagger:hilt-android-compiler:2.51")
+    implementation ("com.google.dagger:hilt-android:2.51")
+    kapt ("com.google.dagger:hilt-compiler:2.51")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
-    implementation("androidx.compose.material:material:1.2.0")
+    implementation("androidx.compose.material:material:1.6.8")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
 }
+
