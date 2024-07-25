@@ -1,2 +1,0 @@
-## BLUETOOTH CHAT APP
-hhh
